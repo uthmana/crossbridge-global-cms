@@ -3,6 +3,7 @@ import type { Block } from 'payload'
 import {
   FixedToolbarFeature,
   HeadingFeature,
+  HorizontalRuleFeature,
   InlineToolbarFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
@@ -35,10 +36,57 @@ export const FormBlock: Block = {
             HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
             FixedToolbarFeature(),
             InlineToolbarFeature(),
+            HorizontalRuleFeature(),
           ]
         },
       }),
       label: 'Intro Content',
+    },
+    {
+      name: 'contactInfo',
+      type: 'group',
+      label: 'Contact Info',
+      fields: [
+        {
+          name: 'items',
+          type: 'array',
+          fields: [
+            {
+              name: 'type',
+              type: 'select',
+              required: true,
+              options: [
+                {
+                  label: 'Phone',
+                  value: 'phone',
+                },
+                {
+                  label: 'Email',
+                  value: 'email',
+                },
+                {
+                  label: 'Location',
+                  value: 'location',
+                },
+              ],
+            },
+            {
+              name: 'label',
+              type: 'text',
+              required: true,
+            },
+            {
+              name: 'value',
+              type: 'text',
+              required: true,
+            },
+            {
+              name: 'href',
+              type: 'text',
+            },
+          ],
+        },
+      ],
     },
   ],
   graphQL: {
