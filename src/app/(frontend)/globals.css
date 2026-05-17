@@ -162,6 +162,12 @@
   .richText-content-legal a {
     @apply font-bold text-foreground/80;
   }
+  .richtext-largecard h2 {
+    @apply font-serif text-3xl text-primary md:text-4xl;
+  }
+  .richtext-largecard p {
+    @apply space-y-5 text-sm leading-relaxed text-muted-foreground md:text-base;
+  }
 }
 
 :root {

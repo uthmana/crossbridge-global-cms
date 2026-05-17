@@ -244,8 +244,11 @@ export interface Page {
     | FeaturedTourismBlock
     | TestimonialBlock
     | ProcessBlock
+    | ProcessTourismBlock
     | StoryBlock
     | TradeCategoryBlock
+    | LargeCardBlock
+    | TreatmentBlock
   )[];
   meta?: {
     title?: string | null;
@@ -974,6 +977,24 @@ export interface ProcessBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProcessTourismBlock".
+ */
+export interface ProcessTourismBlock {
+  title: string;
+  description: string;
+  steps?:
+    | {
+        title: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'processtourism';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "StoryBlock".
  */
 export interface StoryBlock {
@@ -1043,6 +1064,54 @@ export interface TradeCategoryBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'tradecategory';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LargeCardBlock".
+ */
+export interface LargeCardBlock {
+  media: number | Media;
+  richText?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'largecard';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TreatmentBlock".
+ */
+export interface TreatmentBlock {
+  title: string;
+  items?:
+    | {
+        title: string;
+        image: number | Media;
+        bullets?:
+          | {
+              text: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'treatment';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1393,8 +1462,11 @@ export interface PagesSelect<T extends boolean = true> {
         featuredTourism?: T | FeaturedTourismBlockSelect<T>;
         testimonial?: T | TestimonialBlockSelect<T>;
         process?: T | ProcessBlockSelect<T>;
+        processtourism?: T | ProcessTourismBlockSelect<T>;
         story?: T | StoryBlockSelect<T>;
         tradecategory?: T | TradeCategoryBlockSelect<T>;
+        largecard?: T | LargeCardBlockSelect<T>;
+        treatment?: T | TreatmentBlockSelect<T>;
       };
   meta?:
     | T
@@ -1616,6 +1688,23 @@ export interface ProcessBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProcessTourismBlock_select".
+ */
+export interface ProcessTourismBlockSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  steps?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "StoryBlock_select".
  */
 export interface StoryBlockSelect<T extends boolean = true> {
@@ -1649,6 +1738,38 @@ export interface TradeCategoryBlockSelect<T extends boolean = true> {
           | {
               image?: T;
               alt?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LargeCardBlock_select".
+ */
+export interface LargeCardBlockSelect<T extends boolean = true> {
+  media?: T;
+  richText?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TreatmentBlock_select".
+ */
+export interface TreatmentBlockSelect<T extends boolean = true> {
+  title?: T;
+  items?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        bullets?:
+          | T
+          | {
+              text?: T;
               id?: T;
             };
         id?: T;

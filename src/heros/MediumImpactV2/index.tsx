@@ -31,7 +31,7 @@ export const MediumImpactV2Hero: React.FC<Page['hero']> = (props) => {
             {eyebrow}
           </h1>
           <div className="mt-8 max-w-xl text-4xl font-bold text-primary md:text-6xl">
-            {heroLogo && typeof heroLogo === 'object' && (
+            {heroLogo && (
               <Media
                 imgClassName="object-contain w-[220px] h-[86px]"
                 priority

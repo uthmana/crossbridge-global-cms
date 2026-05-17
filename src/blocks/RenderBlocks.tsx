@@ -14,6 +14,9 @@ import { TestimonialBlock } from '@/blocks/Testimonial/Component'
 import { ProcessBlock } from './Process/Component'
 import { StoryBlock } from './Story/Component'
 import { TradeCategoryBlock } from './TradeCategory/Component'
+import { LargeCardBlock } from './LargeCard/Component'
+import { ProcessTourismBlock } from './ProcessTourism/Component'
+import { TreatmentBlock } from './Treatment/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -28,6 +31,9 @@ const blockComponents = {
   process: ProcessBlock,
   story: StoryBlock,
   tradecategory: TradeCategoryBlock,
+  largecard: LargeCardBlock,
+  processtourism: ProcessTourismBlock,
+  treatment: TreatmentBlock,
 }
 
 export const RenderBlocks: React.FC<{
