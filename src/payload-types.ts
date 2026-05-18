@@ -159,7 +159,18 @@ export interface Page {
   id: number;
   title: string;
   hero: {
-    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
+    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact' | 'highImpactv2' | 'mediumImpactv2' | 'lowImpactv2';
+    badge?: {
+      text?: string | null;
+    };
+    heading?: {
+      title: string;
+      highlight?: string | null;
+      suffix?: string | null;
+    };
+    eyebrow?: string | null;
+    title?: string | null;
+    description?: string | null;
     richText?: {
       root: {
         type: string;
@@ -199,9 +210,46 @@ export interface Page {
           id?: string | null;
         }[]
       | null;
-    media?: (number | null) | Media;
+    stats?:
+      | {
+          value?: string | null;
+          label?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    media: number | Media;
+    heroLogo?: (number | null) | Media;
+    carousel?:
+      | {
+          title?: string | null;
+          images?:
+            | {
+                image: number | Media;
+                alt?: string | null;
+                id?: string | null;
+              }[]
+            | null;
+          id?: string | null;
+        }[]
+      | null;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
+  layout: (
+    | CallToActionBlock
+    | ContentBlock
+    | ContentLegalBlock
+    | MediaBlock
+    | ArchiveBlock
+    | ServicesBlock
+    | FormBlock
+    | FeaturedTourismBlock
+    | TestimonialBlock
+    | ProcessBlock
+    | ProcessTourismBlock
+    | StoryBlock
+    | TradeCategoryBlock
+    | LargeCardBlock
+    | TreatmentBlock
+  )[];
   meta?: {
     title?: string | null;
     /**
@@ -539,6 +587,33 @@ export interface ContentBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContentLegalBlock".
+ */
+export interface ContentLegalBlock {
+  subTitle: string;
+  title: string;
+  updatedAt: string;
+  richText: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'contentLegal';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "MediaBlock".
  */
 export interface MediaBlock {
@@ -583,6 +658,30 @@ export interface ArchiveBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServicesBlock".
+ */
+export interface ServicesBlock {
+  eyebrow: string;
+  title: string;
+  description: string;
+  items?:
+    | {
+        eyebrow: string;
+        title: string;
+        description: string;
+        cta: string;
+        href: string;
+        image: number | Media;
+        alt: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'services';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "FormBlock".
  */
 export interface FormBlock {
@@ -603,6 +702,17 @@ export interface FormBlock {
     };
     [k: string]: unknown;
   } | null;
+  contactInfo?: {
+    items?:
+      | {
+          type: 'phone' | 'email' | 'location';
+          label: string;
+          value: string;
+          href?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
   id?: string | null;
   blockName?: string | null;
   blockType: 'formBlock';
@@ -780,6 +890,228 @@ export interface Form {
     | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeaturedTourismBlock".
+ */
+export interface FeaturedTourismBlock {
+  eyebrow: string;
+  title: string;
+  description: string;
+  media: number | Media;
+  stat?: string | null;
+  bullets?:
+    | {
+        bullet?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  links?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'outline') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'featuredTourism';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TestimonialBlock".
+ */
+export interface TestimonialBlock {
+  eyebrow: string;
+  title: string;
+  testimonials?:
+    | {
+        fullname: string;
+        country: string;
+        role: string;
+        initials: string;
+        message: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'testimonial';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProcessBlock".
+ */
+export interface ProcessBlock {
+  eyebrow: string;
+  title: string;
+  description: string;
+  steps?:
+    | {
+        title: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'process';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProcessTourismBlock".
+ */
+export interface ProcessTourismBlock {
+  title: string;
+  description: string;
+  steps?:
+    | {
+        title: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'processtourism';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StoryBlock".
+ */
+export interface StoryBlock {
+  eyebrow: string;
+  title: string;
+  richText?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  stats?:
+    | {
+        title: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'story';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TradeCategoryBlock".
+ */
+export interface TradeCategoryBlock {
+  carousel?:
+    | {
+        title: string;
+        description?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        hashLink: string;
+        reversed?: boolean | null;
+        images?:
+          | {
+              image: number | Media;
+              alt?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'tradecategory';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LargeCardBlock".
+ */
+export interface LargeCardBlock {
+  media: number | Media;
+  richText?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'largecard';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TreatmentBlock".
+ */
+export interface TreatmentBlock {
+  title: string;
+  items?:
+    | {
+        title: string;
+        image: number | Media;
+        bullets?:
+          | {
+              text: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'treatment';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1063,6 +1395,21 @@ export interface PagesSelect<T extends boolean = true> {
     | T
     | {
         type?: T;
+        badge?:
+          | T
+          | {
+              text?: T;
+            };
+        heading?:
+          | T
+          | {
+              title?: T;
+              highlight?: T;
+              suffix?: T;
+            };
+        eyebrow?: T;
+        title?: T;
+        description?: T;
         richText?: T;
         links?:
           | T
@@ -1079,16 +1426,47 @@ export interface PagesSelect<T extends boolean = true> {
                   };
               id?: T;
             };
+        stats?:
+          | T
+          | {
+              value?: T;
+              label?: T;
+              id?: T;
+            };
         media?: T;
+        heroLogo?: T;
+        carousel?:
+          | T
+          | {
+              title?: T;
+              images?:
+                | T
+                | {
+                    image?: T;
+                    alt?: T;
+                    id?: T;
+                  };
+              id?: T;
+            };
       };
   layout?:
     | T
     | {
         cta?: T | CallToActionBlockSelect<T>;
         content?: T | ContentBlockSelect<T>;
+        contentLegal?: T | ContentLegalBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
+        services?: T | ServicesBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
+        featuredTourism?: T | FeaturedTourismBlockSelect<T>;
+        testimonial?: T | TestimonialBlockSelect<T>;
+        process?: T | ProcessBlockSelect<T>;
+        processtourism?: T | ProcessTourismBlockSelect<T>;
+        story?: T | StoryBlockSelect<T>;
+        tradecategory?: T | TradeCategoryBlockSelect<T>;
+        largecard?: T | LargeCardBlockSelect<T>;
+        treatment?: T | TreatmentBlockSelect<T>;
       };
   meta?:
     | T
@@ -1156,6 +1534,18 @@ export interface ContentBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContentLegalBlock_select".
+ */
+export interface ContentLegalBlockSelect<T extends boolean = true> {
+  subTitle?: T;
+  title?: T;
+  updatedAt?: T;
+  richText?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "MediaBlock_select".
  */
 export interface MediaBlockSelect<T extends boolean = true> {
@@ -1179,12 +1569,211 @@ export interface ArchiveBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServicesBlock_select".
+ */
+export interface ServicesBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  description?: T;
+  items?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        description?: T;
+        cta?: T;
+        href?: T;
+        image?: T;
+        alt?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "FormBlock_select".
  */
 export interface FormBlockSelect<T extends boolean = true> {
   form?: T;
   enableIntro?: T;
   introContent?: T;
+  contactInfo?:
+    | T
+    | {
+        items?:
+          | T
+          | {
+              type?: T;
+              label?: T;
+              value?: T;
+              href?: T;
+              id?: T;
+            };
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeaturedTourismBlock_select".
+ */
+export interface FeaturedTourismBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  description?: T;
+  media?: T;
+  stat?: T;
+  bullets?:
+    | T
+    | {
+        bullet?: T;
+        id?: T;
+      };
+  links?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TestimonialBlock_select".
+ */
+export interface TestimonialBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  testimonials?:
+    | T
+    | {
+        fullname?: T;
+        country?: T;
+        role?: T;
+        initials?: T;
+        message?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProcessBlock_select".
+ */
+export interface ProcessBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  description?: T;
+  steps?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProcessTourismBlock_select".
+ */
+export interface ProcessTourismBlockSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  steps?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StoryBlock_select".
+ */
+export interface StoryBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  richText?: T;
+  stats?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TradeCategoryBlock_select".
+ */
+export interface TradeCategoryBlockSelect<T extends boolean = true> {
+  carousel?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        hashLink?: T;
+        reversed?: T;
+        images?:
+          | T
+          | {
+              image?: T;
+              alt?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LargeCardBlock_select".
+ */
+export interface LargeCardBlockSelect<T extends boolean = true> {
+  media?: T;
+  richText?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TreatmentBlock_select".
+ */
+export interface TreatmentBlockSelect<T extends boolean = true> {
+  title?: T;
+  items?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        bullets?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }
@@ -1639,6 +2228,7 @@ export interface Header {
   id: number;
   navItems?:
     | {
+        label: string;
         link: {
           type?: ('reference' | 'custom') | null;
           newTab?: boolean | null;
@@ -1654,6 +2244,27 @@ export interface Header {
           url?: string | null;
           label: string;
         };
+        children?:
+          | {
+              label: string;
+              link: {
+                type?: ('reference' | 'custom') | null;
+                newTab?: boolean | null;
+                reference?:
+                  | ({
+                      relationTo: 'pages';
+                      value: number | Page;
+                    } | null)
+                  | ({
+                      relationTo: 'posts';
+                      value: number | Post;
+                    } | null);
+                url?: string | null;
+                label: string;
+              };
+              id?: string | null;
+            }[]
+          | null;
         id?: string | null;
       }[]
     | null;
@@ -1666,26 +2277,65 @@ export interface Header {
  */
 export interface Footer {
   id: number;
-  navItems?:
+  description: string;
+  columns?:
     | {
-        link: {
-          type?: ('reference' | 'custom') | null;
-          newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: number | Page;
-              } | null)
-            | ({
-                relationTo: 'posts';
-                value: number | Post;
-              } | null);
-          url?: string | null;
-          label: string;
-        };
+        label: string;
+        quickLinks?:
+          | {
+              label: string;
+              link: {
+                type?: ('reference' | 'custom') | null;
+                newTab?: boolean | null;
+                reference?:
+                  | ({
+                      relationTo: 'pages';
+                      value: number | Page;
+                    } | null)
+                  | ({
+                      relationTo: 'posts';
+                      value: number | Post;
+                    } | null);
+                url?: string | null;
+                label: string;
+              };
+              id?: string | null;
+            }[]
+          | null;
         id?: string | null;
       }[]
     | null;
+  contact?: {
+    title?: string | null;
+    email?: string | null;
+    phone?: string | null;
+    location?: string | null;
+    workingHours?: string | null;
+  };
+  bottomBar: {
+    copyrightText: string;
+    legalLinks?:
+      | {
+          label: string;
+          link: {
+            type?: ('reference' | 'custom') | null;
+            newTab?: boolean | null;
+            reference?:
+              | ({
+                  relationTo: 'pages';
+                  value: number | Page;
+                } | null)
+              | ({
+                  relationTo: 'posts';
+                  value: number | Post;
+                } | null);
+            url?: string | null;
+            label: string;
+          };
+          id?: string | null;
+        }[]
+      | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1697,6 +2347,7 @@ export interface HeaderSelect<T extends boolean = true> {
   navItems?:
     | T
     | {
+        label?: T;
         link?:
           | T
           | {
@@ -1705,6 +2356,21 @@ export interface HeaderSelect<T extends boolean = true> {
               reference?: T;
               url?: T;
               label?: T;
+            };
+        children?:
+          | T
+          | {
+              label?: T;
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                  };
+              id?: T;
             };
         id?: T;
       };
@@ -1717,19 +2383,56 @@ export interface HeaderSelect<T extends boolean = true> {
  * via the `definition` "footer_select".
  */
 export interface FooterSelect<T extends boolean = true> {
-  navItems?:
+  description?: T;
+  columns?:
     | T
     | {
-        link?:
+        label?: T;
+        quickLinks?:
           | T
           | {
-              type?: T;
-              newTab?: T;
-              reference?: T;
-              url?: T;
               label?: T;
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                  };
+              id?: T;
             };
         id?: T;
+      };
+  contact?:
+    | T
+    | {
+        title?: T;
+        email?: T;
+        phone?: T;
+        location?: T;
+        workingHours?: T;
+      };
+  bottomBar?:
+    | T
+    | {
+        copyrightText?: T;
+        legalLinks?:
+          | T
+          | {
+              label?: T;
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                  };
+              id?: T;
+            };
       };
   updatedAt?: T;
   createdAt?: T;

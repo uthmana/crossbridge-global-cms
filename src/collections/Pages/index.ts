@@ -7,6 +7,7 @@ import { CallToAction } from '../../blocks/CallToAction/config'
 import { Content } from '../../blocks/Content/config'
 import { FormBlock } from '../../blocks/Form/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
+
 import { hero } from '@/heros/config'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -20,6 +21,16 @@ import {
   OverviewField,
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
+import { ContentLegal } from '@/blocks/ContentLegal/config'
+import { ServicesBlock } from '@/blocks/ServicesBlock/config'
+import { FeaturedTourismBlock } from '@/blocks/FeaturedTourism/config'
+import { TestimonialBlock } from '@/blocks/Testimonial/config'
+import { ProcessBlock } from '@/blocks/Process/config'
+import { StoryBlock } from '@/blocks/Story/config'
+import { TradeCategoryBlock } from '@/blocks/TradeCategory/config'
+import { LargeCardBlock } from '@/blocks/LargeCard/config'
+import { ProcessTourismBlock } from '@/blocks/ProcessTourism/config'
+import { TreatmentBlock } from '@/blocks/Treatment/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -72,7 +83,23 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock],
+              blocks: [
+                CallToAction,
+                Content,
+                ContentLegal,
+                MediaBlock,
+                Archive,
+                ServicesBlock,
+                FormBlock,
+                FeaturedTourismBlock,
+                TestimonialBlock,
+                ProcessBlock,
+                ProcessTourismBlock,
+                StoryBlock,
+                TradeCategoryBlock,
+                LargeCardBlock,
+                TreatmentBlock,
+              ],
               required: true,
               admin: {
                 initCollapsed: true,
