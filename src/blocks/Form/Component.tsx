@@ -5,11 +5,20 @@ import { useRouter } from 'next/navigation'
 import React, { useCallback, useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
 import RichText from '@/components/RichText'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui/xbutton'
 import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 
 import { fields } from './fields'
 import { getClientSideURL } from '@/utilities/getURL'
+import { Mail, MapPin, Phone, Send } from 'lucide-react'
+
+type ContactInfoType = {
+  id: string
+  type: string
+  label: string
+  value: string
+  href: string
+}
 
 export type FormBlockType = {
   blockName?: string
@@ -17,6 +26,7 @@ export type FormBlockType = {
   enableIntro: boolean
   form: FormType
   introContent?: DefaultTypedEditorState
+  contactInfo?: { items: Array<ContactInfoType> }
 }
 
 export const FormBlock: React.FC<
@@ -29,6 +39,7 @@ export const FormBlock: React.FC<
     form: formFromProps,
     form: { id: formID, confirmationMessage, confirmationType, redirect, submitButtonLabel } = {},
     introContent,
+    contactInfo,
   } = props
 
   const formMethods = useForm({
@@ -113,51 +124,120 @@ export const FormBlock: React.FC<
     [router, formID, redirect, confirmationType],
   )
 
-  return (
-    <div className="container lg:max-w-[48rem]">
-      {enableIntro && introContent && !hasSubmitted && (
-        <RichText className="mb-8 lg:mb-12" data={introContent} enableGutter={false} />
-      )}
-      <div className="p-4 lg:p-6 border border-border rounded-[0.8rem]">
-        <FormProvider {...formMethods}>
-          {!isLoading && hasSubmitted && confirmationType === 'message' && (
-            <RichText data={confirmationMessage} />
-          )}
-          {isLoading && !hasSubmitted && <p>Loading, please wait...</p>}
-          {error && <div>{`${error.status || '500'}: ${error.message || ''}`}</div>}
-          {!hasSubmitted && (
-            <form id={formID} onSubmit={handleSubmit(onSubmit)}>
-              <div className="mb-4 last:mb-0">
-                {formFromProps &&
-                  formFromProps.fields &&
-                  formFromProps.fields?.map((field, index) => {
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    const Field: React.FC<any> = fields?.[field.blockType as keyof typeof fields]
-                    if (Field) {
-                      return (
-                        <div className="mb-6 last:mb-0" key={index}>
-                          <Field
-                            form={formFromProps}
-                            {...field}
-                            {...formMethods}
-                            control={control}
-                            errors={errors}
-                            register={register}
-                          />
-                        </div>
-                      )
-                    }
-                    return null
-                  })}
-              </div>
+  const contactInfoItems = contactInfo?.items || []
 
-              <Button form={formID} type="submit" variant="default">
-                {submitButtonLabel}
-              </Button>
-            </form>
-          )}
-        </FormProvider>
+  const renderIcon = (type: string) => {
+    if (type === 'email') return <Mail className="h-5 w-5" />
+    if (type === 'phone') return <Phone className="h-5 w-5" />
+    if (type === 'location') return <MapPin className="h-5 w-5" />
+
+    return ''
+  }
+
+  return (
+    <section id="contact" className="py-20 md:py-28 bg-gradient-soft">
+      <div className="container-px mx-auto grid max-w-7xl gap-12 lg:grid-cols-2">
+        <div>
+          <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
+            Contact
+          </span>
+          <div className="richtext-contact">
+            {enableIntro && introContent && !hasSubmitted && (
+              <RichText
+                className="mb-8 lg:mb-12 richtext-contact"
+                data={introContent}
+                enableGutter={false}
+              />
+            )}
+
+            <ul className="mt-10 space-y-5">
+              {contactInfoItems?.map((item: ContactInfoType, i: number) => {
+                return (
+                  <li className="flex items-start gap-4" key={item.id}>
+                    <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-accent/10 text-accent">
+                      {renderIcon(item.type)}
+                    </span>
+                    <div>
+                      <div className="text-xs uppercase tracking-wider text-muted-foreground">
+                        {item.label}
+                      </div>
+                      {item.href ? (
+                        <a
+                          href={item.href}
+                          className="text-base font-semibold text-primary story-link"
+                        >
+                          {item.value}
+                        </a>
+                      ) : (
+                        <p> {item.value}</p>
+                      )}
+                    </div>
+                  </li>
+                )
+              })}
+            </ul>
+          </div>
+        </div>
+
+        <div className="rounded-3xl border border-border bg-card p-8 shadow-card md:p-10">
+          <FormProvider {...formMethods}>
+            {!isLoading && hasSubmitted && confirmationType === 'message' && (
+              <RichText data={confirmationMessage} />
+            )}
+            {isLoading && !hasSubmitted && <p>Loading, please wait...</p>}
+            {error && <div>{`${error.status || '500'}: ${error.message || ''}`}</div>}
+            {!hasSubmitted && (
+              <form id={formID} onSubmit={handleSubmit(onSubmit)}>
+                <h3 className="text-xl font-bold text-primary">Request a free consultation</h3>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  No commitment. 100% confidential.
+                </p>
+
+                <div className="mb-4 mt-6 last:mb-0">
+                  {formFromProps &&
+                    formFromProps.fields &&
+                    formFromProps.fields?.map((field, index) => {
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                      const Field: React.FC<any> = fields?.[field.blockType as keyof typeof fields]
+                      if (Field) {
+                        return (
+                          <div className="mb-6 last:mb-0" key={index}>
+                            <Field
+                              form={formFromProps}
+                              {...field}
+                              {...formMethods}
+                              control={control}
+                              errors={errors}
+                              register={register}
+                            />
+                          </div>
+                        )
+                      }
+                      return null
+                    })}
+                </div>
+
+                <Button
+                  form={formID}
+                  type="submit"
+                  variant="hero"
+                  size="lg"
+                  className="mt-2 w-full cursor-pointer"
+                >
+                  {submitButtonLabel} <Send className="h-5 w-5" />
+                </Button>
+                <p className="text-center mt-3 text-xs text-muted-foreground">
+                  By submitting you agree to our{' '}
+                  <a href="/privacy-policy" className="hover:text-accent transition-base underline">
+                    Privacy Policy
+                  </a>
+                  .
+                </p>
+              </form>
+            )}
+          </FormProvider>
+        </div>
       </div>
-    </div>
+    </section>
   )
 }
