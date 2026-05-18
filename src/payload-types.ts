@@ -217,7 +217,7 @@ export interface Page {
           id?: string | null;
         }[]
       | null;
-    media?: (number | null) | Media;
+    media: number | Media;
     heroLogo?: (number | null) | Media;
     carousel?:
       | {

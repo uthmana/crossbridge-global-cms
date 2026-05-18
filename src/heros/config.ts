@@ -168,9 +168,6 @@ export const hero: Field = {
       type: 'upload',
       relationTo: 'media',
       required: true,
-      admin: {
-        condition: (_, { type } = {}) => !['lowImpactv2', 'mediumImpactv2'].includes(type),
-      },
     },
     {
       name: 'heroLogo',
