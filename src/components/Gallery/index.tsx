@@ -18,10 +18,12 @@ import { Media } from '../Media'
 export default function Gallery({
   images,
   thumbnail = true,
+  imgClassName = '',
 }: {
   images: MediaType[]
   alt: string
   thumbnail?: boolean
+  imgClassName?: string
 }) {
   const [api, setApi] = useState<CarouselApi>()
   const [selected, setSelected] = useState(0)
@@ -52,7 +54,11 @@ export default function Gallery({
           {images?.map((src, i) => (
             <CarouselItem key={i}>
               <div className="overflow-hidden rounded-2xl shadow-elevated">
-                <Media imgClassName="aspect-4/3 w-full object-cover" priority resource={src} />
+                <Media
+                  imgClassName={`aspect-4/3 w-full object-cover ${imgClassName}`}
+                  priority
+                  resource={src}
+                />
               </div>
             </CarouselItem>
           ))}
