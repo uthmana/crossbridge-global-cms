@@ -56,12 +56,6 @@ export const TradeCategoryBlock: Block = {
           label: 'Reverse Content',
         },
         {
-          name: 'imgClassName',
-          type: 'text',
-          label: 'imgClassName',
-          required: false,
-        },
-        {
           name: 'images',
           type: 'array',
           label: 'Images',
