@@ -15,14 +15,19 @@ import Autoplay from 'embla-carousel-autoplay'
 import { Media as MediaType } from '@/payload-types'
 import { Media } from '../Media'
 
+type AspectRatio = 'horizontal' | 'vertical' | 'square'
+
 export default function Gallery({
   images,
   thumbnail = true,
+  imgClassName = '',
+  aspectRatio = 'square',
 }: {
   images: MediaType[]
   alt: string
   thumbnail?: boolean
   imgClassName?: string
+  aspectRatio?: AspectRatio
 }) {
   const [api, setApi] = useState<CarouselApi>()
   const [selected, setSelected] = useState(0)
@@ -34,6 +39,12 @@ export default function Gallery({
       stopOnMouseEnter: true,
     }),
   )
+
+  const aspectRatioMap: Record<AspectRatio, string> = {
+    horizontal: 'aspect-16/10',
+    vertical: 'aspect-4/5',
+    square: 'aspect-4/3',
+  }
 
   useEffect(() => {
     if (!api) return
@@ -53,7 +64,11 @@ export default function Gallery({
           {images?.map((src, i) => (
             <CarouselItem key={i}>
               <div className="overflow-hidden rounded-2xl shadow-elevated">
-                <Media imgClassName="aspect-4/3 w-full object-cover" priority resource={src} />
+                <Media
+                  imgClassName={`w-full object-cover ${imgClassName} ${aspectRatioMap[aspectRatio]}`}
+                  priority
+                  resource={src}
+                />
               </div>
             </CarouselItem>
           ))}

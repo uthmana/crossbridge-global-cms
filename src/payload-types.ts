@@ -1051,6 +1051,8 @@ export interface TradeCategoryBlock {
         } | null;
         hashLink: string;
         reversed?: boolean | null;
+        imgClassName?: string | null;
+        aspectRatio?: ('square' | 'vertical' | 'horizontal') | null;
         images?:
           | {
               image: number | Media;
@@ -1733,6 +1735,8 @@ export interface TradeCategoryBlockSelect<T extends boolean = true> {
         description?: T;
         hashLink?: T;
         reversed?: T;
+        imgClassName?: T;
+        aspectRatio?: T;
         images?:
           | T
           | {
