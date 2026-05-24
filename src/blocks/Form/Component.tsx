@@ -182,10 +182,13 @@ export const FormBlock: React.FC<
         <div className="rounded-3xl border border-border bg-card p-8 shadow-card md:p-10">
           <FormProvider {...formMethods}>
             {!isLoading && hasSubmitted && confirmationType === 'message' && (
-              <RichText data={confirmationMessage} />
+              <RichText
+                data={confirmationMessage}
+                className="bg-gradient-accent h-full prose md:prose-md [&_p]:leading-6 [&_h3]:text-2xl
+                [&_h3]:font-bold [&_h3]:mb-1 text-accent-foreground py-5 rounded-xl"
+              />
             )}
-            {isLoading && !hasSubmitted && <p>Loading, please wait...</p>}
-            {error && <div>{`${error.status || '500'}: ${error.message || ''}`}</div>}
+
             {!hasSubmitted && (
               <form id={formID} onSubmit={handleSubmit(onSubmit)}>
                 <h3 className="text-xl font-bold text-primary">Request a free consultation</h3>
@@ -223,8 +226,16 @@ export const FormBlock: React.FC<
                   variant="hero"
                   size="lg"
                   className="mt-2 w-full cursor-pointer"
+                  disabled={isLoading}
                 >
-                  {submitButtonLabel} <Send className="h-5 w-5" />
+                  {!isLoading && !hasSubmitted && (
+                    <span className="flex items-center gap-3">
+                      {submitButtonLabel} <Send className="h-5 w-5" />
+                    </span>
+                  )}
+                  {isLoading && !hasSubmitted && (
+                    <p className="text-center">Loading, please wait...</p>
+                  )}
                 </Button>
                 <p className="text-center mt-3 text-xs text-muted-foreground">
                   By submitting you agree to our{' '}
@@ -235,6 +246,7 @@ export const FormBlock: React.FC<
                 </p>
               </form>
             )}
+            {error && <div>{`${error.status || '500'}: ${error.message || ''}`}</div>}
           </FormProvider>
         </div>
       </div>

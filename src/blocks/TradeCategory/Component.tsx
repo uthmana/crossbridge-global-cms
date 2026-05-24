@@ -24,7 +24,11 @@ export const TradeCategoryBlock: React.FC<TradeCategoryProps> = ({ carousel }) =
             >
               {/* Gallery */}
               <div className={item.reversed ? 'lg:order-2' : 'lg:order-1'}>
-                <Gallery images={getImage(item?.images)} alt={item?.title} />
+                <Gallery
+                  images={getImage(item?.images)}
+                  alt={item?.title}
+                  aspectRatio={item?.aspectRatio || 'square'}
+                />
               </div>
 
               {/* Content */}
